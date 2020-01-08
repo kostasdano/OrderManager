@@ -54,6 +54,7 @@
     </div>
 </div>
 
+{% if coupon_list|length != 0 %}
 <div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
 
     {% for coupon in coupon_list %}
@@ -83,7 +84,7 @@
     {% endif %}
     {% endfor %}
 </div>
-
+{% endif %}
 
 
 <div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
@@ -96,6 +97,7 @@
     </div>
 </div>
 
+{% if order_list|length != 0 %}
 <div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
 
     {% for order in order_list %}
@@ -108,6 +110,7 @@
     {% endif %}
     {% endfor %}
 </div>
+{% endif %}
 
 {% if is_paginated %}
 <nav class="custom-pagination {% if customer.c_active == False %} hidden-profile {% endif %}"
