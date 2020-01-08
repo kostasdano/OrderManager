@@ -3,6 +3,8 @@
 
 {% block body_block %}
 
+
+
 {% if customer.c_active == False %}
 <div class="jumbotron">
         <div align="center">
@@ -40,9 +42,48 @@
             {% endif %}
         </div>
     </div>
-
-
 </div>
+
+<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+    <div class="row">
+        <div class="col-md-6" align="left">
+            <h2><i class="fa fa-stats"></i> Coupons <a
+                    href="{% url 'customers:customer_coupon_add' customer_pk=customer.pk %}"><i
+                    class="fa fa-plus" style="color: black;"></i></a></h2>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+
+    {% for coupon in coupon_list %}
+    <div class="row">
+         <div class="col-md-6" align="left">
+             {% if coupon.order %}
+             <h4><strike style="opacity:0.7;">{{coupon.code}} : {{coupon.discount_percentage}}%</strike> (Redeemed)</h4>
+             {% else %}
+             <h4>{{coupon.code}} : {{coupon.discount_percentage}}% </h4>
+             {% endif %}
+
+        </div>
+        <div class="col-md-6" align="right">
+            {% if user.is_authenticated %}
+            <h1>
+                <form action="{% url 'customers:coupon_delete' pk=coupon.id %}" method="post">
+                    {% csrf_token %}
+                    <h4><button class="btn fa fa-trash" style="background-color: Transparent;" aria-hidden="true"
+                            onclick="return confirm('Are you sure?');"></button></h4>
+                </form>
+            </h1>
+            {% endif %}
+        </div>
+    </div>
+    {% if forloop.counter < coupon_list|length %}
+    <hr class="my-4">
+    {% endif %}
+    {% endfor %}
+</div>
+
 
 
 <div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">

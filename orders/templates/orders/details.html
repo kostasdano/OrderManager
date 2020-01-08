@@ -34,7 +34,11 @@
 
 
 <div class="jumbotron" style="padding: 1rem 1rem;">
-    <h2 align="right">Total: {{ total_price }} $</h2>
+    {% if order.coupon %}
+    <h4 align="right">Initial Price: {{ initial_price }} $</h4>
+    <h5 align="right"><strong>Coupon: {{order.coupon.code}} (-{{order.coupon.discount_percentage}}%)</strong></h5>
+    {% endif %}
+    <h2 align="right">Total Price: {{ total_price }} $</h2>
 </div>
 
 

@@ -4,13 +4,33 @@
 {% block body_block %}
 
 
-    <div class="jumbotron">
-        <h1>Create Order</h1>
-        <form method="post">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            <input class="btn btn-dark" type="submit" value="Save">
-        </form>
-    </div>
+<div class="jumbotron">
+    <h1>Create Order</h1>
+    <form method="post" id="order_form" data-coupons-url="{% url 'orders:ajax_load_coupons' %}" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input class="btn btn-dark" type="submit" value="Save">
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    $("#id_customer").change(function () {
+      var url = $("#order_form").attr("data-coupons-url");  // get the url of the `load_coupons` view
+      var customerId = $(this).val();  // get the selected customer ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-coupons/)
+        data: {
+          'customer': customerId       // add the customer id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_coupons` view function
+          $("#id_coupon").html(data);  // replace the contents of the coupon input with the data that came from the server
+        }
+      });
+
+    });
+
+</script>
 
 {% endblock %}

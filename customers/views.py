@@ -4,7 +4,7 @@ from django.shortcuts import  get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.forms.widgets import SelectDateWidget
-from .models import Customer
+from .models import Customer, Coupon
 
 
 class CustomerList(LoginRequiredMixin, ListView):
@@ -44,6 +44,37 @@ class CustomerCreate(LoginRequiredMixin, CreateView):
         return form
 
 
+class CouponAdd(LoginRequiredMixin, CreateView):
+    model = Coupon
+    fields = ['code', 'discount_percentage', 'customer']
+    template_name = 'customers/add_coupon.html'
+
+    def get_form(self, *args, **kwargs):
+        form = super(CouponAdd, self).get_form(*args, **kwargs)
+        form.fields['customer'].queryset = Customer.objects.filter(c_active=True)
+        return form
+
+    def get_initial(self):
+        initial = super(CouponAdd, self).get_initial()
+        if "customer_pk" in self.kwargs:
+            customer = Customer.objects.get(id__iexact=self.kwargs.get("customer_pk"))
+            initial['customer'] = customer
+        return initial
+
+
+class CouponDelete(LoginRequiredMixin, DeleteView):
+    model = Coupon
+
+    def delete(self, *args, **kwargs):
+        self.customer = Coupon.objects.get(id__iexact=self.kwargs.get("pk")).customer.pk
+        self.object = self.get_object()
+        return super().delete(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('customers:customer_orders', kwargs={'pk': self.customer})
+
+
+
 class CustomerProducts(LoginRequiredMixin, ListView):
     model = Customer
     template_name = 'customers/details.html'
@@ -51,11 +82,13 @@ class CustomerProducts(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         self.customer = get_object_or_404(Customer, pk=self.kwargs['pk'])
-        return self.customer.customer_orders.all()
+        return self.customer.customer_orders.all(), self.customer.coupons.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["customer"] = self.customer
+        context["order_list"] = self.customer.customer_orders.all()
+        context["coupon_list"] = self.customer.coupons.all()
         return context
 
 

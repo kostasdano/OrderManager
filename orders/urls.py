@@ -3,7 +3,6 @@ from . import views
 
 app_name = 'orders'
 
-
 urlpatterns = [
     path('', views.OrderList.as_view(), name='order_list'),
     path('new/', views.OrderCreate.as_view(), name='order_create'),
@@ -12,4 +11,6 @@ urlpatterns = [
     path('<int:pk>/', views.OrderDetails.as_view(), name='order_details'),
     path('<int:pk>/delete/', views.OrderDelete.as_view(), name='order_delete'),
     path('<int:pk>/update/', views.OrderUpdate.as_view(), name='order_update'),
+
+    path('ajax/load-coupons/', views.load_coupons, name='ajax_load_coupons'),
 ]

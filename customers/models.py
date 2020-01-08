@@ -11,6 +11,7 @@ class Customer(models.Model):
     tin = models.PositiveIntegerField()
     c_active = models.BooleanField(default=True)
 
+
     def save(self, *args, **kwargs):
         self.full_name = self.first_name + ' ' + self.last_name
         super(Customer, self).save(*args, **kwargs)
@@ -21,8 +22,20 @@ class Customer(models.Model):
     def get_absolute_url(self):
         return reverse('customers:customer_orders', kwargs={'pk': self.pk})
 
-
-
     @property
     def display_name(self):
         return f'{self.first_name} {self.last_name}'
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    discount_percentage = models.PositiveIntegerField(max_length=3)
+    customer = models.ForeignKey(Customer, related_name="coupons", on_delete=models.CASCADE)       # Multiple coupons to each Customer
+
+    def __str__(self):
+        return self.code
+
+    def get_absolute_url(self):
+        return reverse('customers:customer_orders', kwargs={'pk': self.customer.pk})
+
+
