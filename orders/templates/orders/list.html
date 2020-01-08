@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-6" align="left">
+            <h1><i class="fa fa-shopping-cart"></i> Orders <a href="{% url 'orders:order_create' %}"><i
+                    class="fa fa-plus black"></i></a></h1>
+        </div>
+    </div>
+</div>
+
+
+<div class="jumbotron">
+
+    {% for order in order_list %}
+    <a href="{% url 'orders:order_details' pk=order.id %}">
+        <h4>#{{order.id}}: <strong>{{order.customer.full_name}}</strong> ordered <strong>{{order.product.name}}</strong>
+            on <strong>{{order.date}}</strong></h4>
+        <h5></h5>
+        <h5></h5>
+    </a>
+
+    {% if forloop.counter < order_list|length %}
+    <hr class="my-4">
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+{% if is_paginated %}
+<nav class="custom-pagination" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" style="color: black;">Previous</a>
+        </li>
+        {% endif %}
+        {% for object in page_obj.paginator.page_range %}
+
+        <li class="page-item"><a class="page-link" style="color: black;"
+                                 href="{% url 'orders:order_list' %}?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" style="color: black;">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+
+{% endblock %}

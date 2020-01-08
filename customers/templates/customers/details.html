@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+
+{% if customer.c_active == False %}
+<div class="jumbotron">
+        <div align="center">
+            <h4><strong>Warning! This Customer is deactivated. </strong></h4>
+            <form action="{% url 'customers:customer_reactivate' pk=customer.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-dark" aria-hidden="true"
+                        onclick="return confirm('Reactivate {{customer.full_name}}?');">Activate
+                </button>
+            </form>
+        </div>
+</div>
+{% endif %}
+
+
+<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+    <div class="row">
+        <div class="col-md-6" align="left">
+            <h1>{{customer.full_name}}</h1>
+            <h4>Date of birth: {{customer.birth_date}}</h4>
+            <h4>Email: {{customer.email}}</h4>
+            <h4>Tax Identification Number: {{customer.tin}}</h4>
+        </div>
+        <div class="col-md-6" align="right">
+            {% if user.is_authenticated %}
+            <h1>
+                <a href="{% url 'customers:customer_update' pk=customer.id %}"><span
+                        class="fa fa-pencil"
+                        aria-hidden="true"></span></a>
+
+                <a href="{% url 'customers:customer_deactivate' pk=customer.id %}"><span
+                        class="fa fa-trash"
+                        aria-hidden="true"></span></a>
+            </h1>
+            {% endif %}
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+    <div class="row">
+        <div class="col-md-6" align="left">
+            <h2><i class="fa fa-stats"></i> Orders <a
+                    href="{% url 'orders:order_create_cpk' customer_pk=customer.pk %}"><i
+                    class="fa fa-plus" style="color: black;"></i></a></h2>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+
+    {% for order in order_list %}
+    <a href="{% url 'orders:order_details' pk=order.id %}">
+        <h4>{{order.product}}</h4>
+    </a>
+
+    {% if forloop.counter < order_list|length %}
+    <hr class="my-4">
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav class="custom-pagination {% if customer.c_active == False %} hidden-profile {% endif %}"
+     aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" style="color: black;">Previous</a>
+        </li>
+        {% endif %}
+        {% for object in page_obj.paginator.page_range %}
+
+        <li class="page-item"><a class="page-link" style="color: black;"
+                                 href="{% url 'customers:customer_orders' pk=customer.pk %}?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" style="color: black;">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+
+{% endblock %}

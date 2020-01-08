@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block body_block %}
+
+
+    <div class="jumbotron">
+        <h1>Please login</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input class="btn btn-dark" type="submit" value="Login">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+
+{% endblock %}

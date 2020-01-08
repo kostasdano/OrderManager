@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-6" align="left">
+            <h1>Order #{{order.id}}</h1>
+        </div>
+        <div class="col-md-6" align="right">
+            {% if user.is_authenticated %}
+            <h1>
+                <form action="{% url 'orders:order_delete' pk=order.id %}" method="post">
+                    {% csrf_token %}
+                    <a class="btn fa fa-pencil" aria-hidden="true" href="{% url 'orders:order_update' pk=order.id %}"></a>
+                    <button class="btn fa fa-trash" style="background-color: Transparent;" aria-hidden="true"
+                            onclick="return confirm('Are you sure?');"></button>
+                </form>
+            </h1>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h2>Customer: <a href="{% url 'customers:customer_orders' pk=order.customer.id %}">{{order.customer.full_name}}</a>
+    </h2>
+    <h2>Product: <a href="{% url 'products:product_details' pk=order.product.id %}">{{order.product.name}}</a></h2>
+    <h2>Price: {{order.product.price}} $</h2>
+    <h2>Quantity: {{order.amount}}</h2>
+    <h2>Date: {{order.date}}</h2>
+</div>
+
+
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h2 align="right">Total: {{ total_price }} $</h2>
+</div>
+
+
+{% endblock %}

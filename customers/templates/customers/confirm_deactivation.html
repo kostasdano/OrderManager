@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+    <h1>Deactivate {{customer.full_name}}?</h1>
+    <h3>The customer will no longer be able to make orders and won't be shown in Search Results!</h3><br>
+
+    <form method="post" action="{% url 'customers:customer_deactivate' pk=customer.pk%}">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="Deactivate">
+        <a class="btn" href="{% url 'customers:customer_orders' pk=customer.pk %} ">Cancel</a>
+    </form>
+</div>
+
+<div class="jumbotron">
+    <h1>Permanently Delete {{customer.full_name}}?</h1>
+    <h3>All orders will be lost!</h3><br>
+
+    <form method="post" action="{% url 'customers:customer_delete' pk=customer.pk%}">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="Delete">
+        <a class="btn" href="{% url 'customers:customer_orders' pk=customer.pk %} ">Cancel</a>
+    </form>
+</div>
+
+
+{% endblock %}

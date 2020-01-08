@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+    <h1>Are you sure you wanna delete this Order #{{order.id}}?</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="Delete">
+        <a class="btn" href="{% url 'home' %} ">Cancel</a>
+    </form>
+</div>
+
+
+{% endblock %}

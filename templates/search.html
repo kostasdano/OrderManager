@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+
+<div class="jumbotron">
+    {% if user.is_authenticated %}
+
+    <h1 style="text-align: center;">Welcome to OrderManager</h1><br>
+    <form class="form-inline" action="{% url 'home_search' %}">
+        <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search" aria-label="Search"
+               style="width: 95%;">
+        <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+
+    {% else %}
+    <h1 style="text-align: center;">Welcome to OrderManager</h1><br>
+    {% endif %}
+</div>
+
+
+{% if results %}
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h2>Search Results for <strong>"{{keyword}}"</strong>:</h2>
+</div>
+
+
+<!--CUSTOMERS-->
+{% if customer_results %}
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h1>Customers</h1>
+    <hr class="my-4">
+    {% for customer in customer_results %}
+    <h4><a href="{% url 'customers:customer_orders' pk=customer.id%}">{{customer.first_name}} {{customer.last_name}}</a>
+    </h4>
+    {% endfor %}
+</div>
+{% endif %}
+<!--END OF CUSTOMERS-->
+
+<!--PRODUCTS-->
+{% if product_results %}
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h1>Products:</h1>
+    <hr class="my-4">
+    {% for product in product_results %}
+    <h4><a href="{% url 'products:product_details' pk=product.id%}">{{product.name}}</a></h4>
+    {% endfor %}
+</div>
+{% endif %}
+<!--END OF PRODUCTS-->
+
+<!--CUSTOMER_ORDERS-->
+{% if customer_order_results %}
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h1>Customer Orders: </h1>
+    <hr class="my-4">
+    {% for orders in customer_order_results %}
+    {% for order in orders%}
+    <h4><a href="{% url 'orders:order_details' pk=order.id%}">#{{order.id}} {{order.customer.first_name}}
+        {{order.customer.last_name}} ordered {{order.product.name}}</a></h4>
+    {% endfor %}
+    {% endfor %}
+</div>
+{% endif %}
+<!--END OF CUSTOMER_ORDERS-->
+
+<!--PRODUCT_ORDERS-->
+{% if product_order_results %}
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h1>Product Orders:</h1>
+    <hr class="my-4">
+    {% for orders in product_order_results %}
+    {% for order in orders%}
+    <h4><a href="{% url 'orders:order_details' pk=order.id%}">#{{order.id}} {{order.customer.first_name}}
+        {{order.customer.last_name}} ordered {{order.product.name}}</a></h4>
+    {% endfor %}
+    {% endfor %}
+</div>
+
+<!--END OF PRODUCT_ORDERS-->
+
+{% endif %}
+
+{% else %}
+<div class="jumbotron" style="padding: 1rem 1rem;">
+    <h2>No results found for <strong>"{{keyword}}"</strong></h2>
+</div>
+
+{% endif %}
+
+
+{% endblock %}

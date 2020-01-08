@@ -1,0 +1,23 @@
+.jumbotron {
+    padding: 2rem 1rem;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: black;
+}
+
+.index-icons {
+    margin-top: 5em;
+}
+
+.col-md-4 {
+    text-align: center;
+}
+
+.black {
+    color: black;
+}
+
+.hidden-profile {
+    opacity: 0.3;
+}
