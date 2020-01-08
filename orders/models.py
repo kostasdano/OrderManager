@@ -10,7 +10,7 @@ class Order(models.Model):
     product = models.ForeignKey(Product, related_name='product_orders', on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now=True)
-    coupon = models.OneToOneField(Coupon, related_name="order", on_delete=models.CASCADE, null=True)
+    coupon = models.OneToOneField(Coupon, related_name="order", blank=True, on_delete=models.CASCADE, null=True)
 
     class Meta:
         unique_together = ('customer', 'product')

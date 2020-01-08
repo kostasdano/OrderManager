@@ -24,7 +24,7 @@ class OrderCreate(LoginRequiredMixin, CreateView):
     # fields = ['customer', 'product', 'amount', 'coupon']
     template_name = 'orders/create_form.html'
     form_class = OrderForm
-    success_url = reverse_lazy('home')
+
 
     # def get_initial(self):
     #     initial = super(OrderCreate, self).get_initial()

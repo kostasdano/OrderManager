@@ -25,7 +25,8 @@ SECRET_KEY = '4l5!6wefot62r^3z-@si7vvq5@im$3=kpz1^)joy4!w8o3$5iz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['serene-fortress-52493.herokuapp.com']
+ALLOWED_HOSTS = ['serene-fortress-52493.herokuapp.com',
+                 '127.0.0.1',]
 
 # Application definition
 
