@@ -14,7 +14,7 @@ class OrderForm(forms.ModelForm):
 
         if 'customer' in self.data:
             try:
-                customer_id = int(self.data.get('customer'))
+                customer_id = self.data.get('customer')
                 customer = Customer.objects.get(id__iexact=customer_id)
                 self.fields['coupon'].queryset = customer.coupons.filter(order=None)
             except (ValueError, TypeError):
