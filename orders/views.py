@@ -1,11 +1,13 @@
 from decimal import *
+
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, FormView
 from customers.models import Customer
 from .models import Order
-from .forms import OrderForm
+from .forms import OrderForm, CheckboxesForm
 
 
 class OrderList(LoginRequiredMixin, ListView):
@@ -65,3 +67,29 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('orders:order_details', kwargs={'pk': self.object.pk})
+
+
+# Delete Multiple Orders
+class DeleteMultipleOrders(FormView):
+    form_class = CheckboxesForm
+    template_name = 'orders/delete_multiple_orders.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteMultipleOrders,self).get_context_data(**kwargs)
+        context['order_list'] = Order.objects.all()
+        return context
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        form.fields['checkboxes'].queryset = Order.objects.all()
+        return form
+
+    def form_valid(self, form):
+        qs = Order.objects.filter(
+            pk__in=list(map(int, self.request.POST.getlist('checkboxes')))
+        )
+        qs.delete()
+
+        return HttpResponseRedirect(reverse_lazy('orders:order_list'))
+

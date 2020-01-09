@@ -19,6 +19,6 @@ class Order(models.Model):
         return reverse('orders:order_details', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return '{} {} -> {} ({})'.format(self.customer.first_name, self.customer.last_name, self.product.name, self.amount)
+        return '{} ordered {}'.format(self.customer.full_name, self.product.name)
 
 

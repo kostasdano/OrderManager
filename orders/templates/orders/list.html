@@ -10,6 +10,9 @@
             <h1><i class="fa fa-shopping-cart"></i> Orders <a href="{% url 'orders:order_create' %}"><i
                     class="fa fa-plus black"></i></a></h1>
         </div>
+        <div class="col-md-6" align="right">
+            <h1><a class="btn fa fa-trash" aria-hidden="true" href="{% url 'orders:delete_orders' %}"></a></h1>
+        </div>
     </div>
 </div>
 

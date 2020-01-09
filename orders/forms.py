@@ -24,3 +24,13 @@ class OrderForm(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields['coupon'].queryset = self.instance.customer.coupons.all()
+
+
+
+class CheckboxesForm(forms.Form):
+
+    checkboxes = forms.ModelMultipleChoiceField(
+        Order.objects.all(),
+        label='',
+        widget=forms.CheckboxSelectMultiple)
+

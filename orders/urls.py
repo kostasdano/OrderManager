@@ -13,4 +13,6 @@ urlpatterns = [
     path('<int:pk>/update/', views.OrderUpdate.as_view(), name='order_update'),
 
     path('ajax/load-coupons/', views.load_coupons, name='ajax_load_coupons'),
+
+    path('order_list_delete/', views.DeleteMultipleOrders.as_view(), name='delete_orders'),
 ]
