@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Product
 
 
+# List of all Active Products
 class ProductList(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'products/list.html'
@@ -16,6 +17,7 @@ class ProductList(LoginRequiredMixin, ListView):
     paginate_by = 4
 
 
+# List of all Inactive Products
 class DeactivatedProductList(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'products/list.html'
@@ -26,6 +28,7 @@ class DeactivatedProductList(LoginRequiredMixin, ListView):
     paginate_by = 4
 
 
+# Search only for Products/Displayed in the Product Tab
 class ProductSearch(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'products/list.html'
@@ -38,12 +41,14 @@ class ProductSearch(LoginRequiredMixin, ListView):
         return object_list
 
 
+# Create a new Product
 class ProductCreate(LoginRequiredMixin, CreateView):
     model = Product
     fields = ['name', 'description', 'price']
     template_name = 'products/create_form.html'
 
 
+# Display all the Products's Orders in product's info template
 class ProductsCostumers(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'products/details.html'
@@ -59,6 +64,7 @@ class ProductsCostumers(LoginRequiredMixin, ListView):
         return context
 
 
+# Edit a Product
 class ProductUpdate(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'products/update_form.html'
@@ -68,6 +74,8 @@ class ProductUpdate(LoginRequiredMixin, UpdateView):
         return reverse_lazy('products:product_details', kwargs={'pk': self.object.pk})
 
 
+# Product Deactivate / once deactivated, not shown in Search Results and cannot be ordered
+# Warning: Deactivated means still in database
 class ProductDeactivate(LoginRequiredMixin, UpdateView):
     model = Product
     fields = ['p_active']
@@ -82,10 +90,11 @@ class ProductDeactivate(LoginRequiredMixin, UpdateView):
         return reverse_lazy('products:product_details', kwargs={'pk': self.object.pk})
 
 
+# Product Reactivate / turns a product from inactive to active
+# Once reactivated, a product is shown in Search Results and can be ordered
 class ProductReactivate(LoginRequiredMixin, UpdateView):
     model = Product
     fields = ['p_active']
-    template_name = 'products/confirm_activation.html'
 
     def post(self, request, **kwargs):
         request.POST = request.POST.copy()
@@ -96,6 +105,7 @@ class ProductReactivate(LoginRequiredMixin, UpdateView):
         return reverse_lazy('products:product_details', kwargs={'pk': self.object.pk})
 
 
+# Product Delete / Deletes a Product and all their Orders from the Database
 class ProductDelete(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'products/deletion_options.html'

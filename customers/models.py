@@ -9,7 +9,7 @@ class Customer(models.Model):
     email = models.EmailField()
     birth_date = models.DateField()
     tin = models.PositiveIntegerField()
-    c_active = models.BooleanField(default=True)
+    c_active = models.BooleanField(default=True)    # if c_active=False, Customer is unavailable for Orders/Search while existing Orders don't get deleted
 
 
     def save(self, *args, **kwargs):
