@@ -70,7 +70,7 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
 
 
 # Delete Multiple Orders
-class DeleteMultipleOrders(FormView):
+class DeleteMultipleOrders(LoginRequiredMixin, FormView):
     form_class = CheckboxesForm
     template_name = 'orders/delete_multiple_orders.html'
 
