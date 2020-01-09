@@ -1,4 +1,4 @@
 <option value="">---------</option>
 {% for coupon in coupons %}
-<option value="{{ coupon.pk }}">{{ coupon.code }}</option>
+<option value="{{ coupon.pk }}">{{coupon.code}}: {{coupon.discount_percentage}}%</option>
 {% endfor %}
