@@ -3,9 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
 from .models import Product
-# Create your views here.
 
 
 class ProductList(LoginRequiredMixin, ListView):

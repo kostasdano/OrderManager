@@ -1,13 +1,9 @@
 from decimal import *
-
 from django.shortcuts import render
-
-from customers.models import Coupon
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 from customers.models import Customer
-from products.models import Product
 from .models import Order
 from .forms import OrderForm
 
@@ -25,6 +21,7 @@ class OrderCreate(LoginRequiredMixin, CreateView):
     form_class = OrderForm
 
 
+# Load Coupon dropdown list for OrderCreate form
 def load_coupons(request):
     customer_id = request.GET.get('customer')
     customer = Customer.objects.get(id=customer_id)
@@ -51,7 +48,6 @@ class OrderDetails(LoginRequiredMixin, DetailView):
 
 class OrderDelete(LoginRequiredMixin, DeleteView):
     model = Order
-
 
     def delete(self, *args, **kwargs):
         self.customer = Order.objects.get(id=self.kwargs.get("pk")).customer.pk

@@ -27,6 +27,7 @@ class DeactivatedCustomerList(LoginRequiredMixin, ListView):
     paginate_by = 4
 
 
+
 class CustomerSearch(LoginRequiredMixin, ListView):
     model = Customer
     template_name = 'customers/list.html'
@@ -52,37 +53,6 @@ class CustomerCreate(LoginRequiredMixin, CreateView):
         form = super(CustomerCreate, self).get_form(form_class)
         form.fields['birth_date'].widget = SelectDateWidget(years=range(1900, 2002))
         return form
-
-
-class CouponAdd(LoginRequiredMixin, CreateView):
-    model = Coupon
-    fields = ['code', 'discount_percentage', 'customer']
-    template_name = 'customers/add_coupon.html'
-
-    def get_form(self, *args, **kwargs):
-        form = super(CouponAdd, self).get_form(*args, **kwargs)
-        form.fields['customer'].queryset = Customer.objects.filter(c_active=True)
-        return form
-
-    def get_initial(self):
-        initial = super(CouponAdd, self).get_initial()
-        if "customer_pk" in self.kwargs:
-            customer = Customer.objects.get(id=self.kwargs.get("customer_pk"))
-            initial['customer'] = customer
-        return initial
-
-
-class CouponDelete(LoginRequiredMixin, DeleteView):
-    model = Coupon
-
-    def delete(self, *args, **kwargs):
-        self.customer = Coupon.objects.get(id=self.kwargs.get("pk")).customer.pk
-        self.object = self.get_object()
-        return super().delete(*args, **kwargs)
-
-    def get_success_url(self):
-        return reverse_lazy('customers:customer_orders', kwargs={'pk': self.customer})
-
 
 
 class CustomerProducts(LoginRequiredMixin, ListView):
@@ -145,3 +115,37 @@ class CustomerDelete(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('customers:customer_list')
+
+
+# Coupon Classes
+
+
+class CouponAdd(LoginRequiredMixin, CreateView):
+    model = Coupon
+    fields = ['code', 'discount_percentage', 'customer']
+    template_name = 'customers/add_coupon.html'
+
+    def get_form(self, *args, **kwargs):
+        form = super(CouponAdd, self).get_form(*args, **kwargs)
+        form.fields['customer'].queryset = Customer.objects.filter(c_active=True)
+        return form
+
+    def get_initial(self):
+        initial = super(CouponAdd, self).get_initial()
+        if "customer_pk" in self.kwargs:
+            customer = Customer.objects.get(id=self.kwargs.get("customer_pk"))
+            initial['customer'] = customer
+        return initial
+
+
+class CouponDelete(LoginRequiredMixin, DeleteView):
+    model = Coupon
+
+    def delete(self, *args, **kwargs):
+        self.customer = Coupon.objects.get(id=self.kwargs.get("pk")).customer.pk
+        self.object = self.get_object()
+        return super().delete(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('customers:customer_orders', kwargs={'pk': self.customer})
+
