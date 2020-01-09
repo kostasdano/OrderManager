@@ -57,7 +57,7 @@ class CouponAdd(LoginRequiredMixin, CreateView):
     def get_initial(self):
         initial = super(CouponAdd, self).get_initial()
         if "customer_pk" in self.kwargs:
-            customer = Customer.objects.get(id__iexact=int(self.kwargs.get("customer_pk")))
+            customer = Customer.objects.get(id__iexact=self.kwargs.get("customer_pk"))
             initial['customer'] = customer
         return initial
 
