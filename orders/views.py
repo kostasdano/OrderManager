@@ -27,8 +27,7 @@ class OrderCreate(LoginRequiredMixin, CreateView):
 
 def load_coupons(request):
     customer_id = request.GET.get('customer')
-    print(customer_id)
-    customer = Customer.objects.get(id__iexact=customer_id)
+    customer = Customer.objects.get(id=customer_id)
     coupons = customer.coupons.filter(order=None)
     return render(request, 'orders/coupon_dropdown_list_options.html', {'coupons': coupons})
 

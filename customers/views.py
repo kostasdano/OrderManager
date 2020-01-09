@@ -57,7 +57,7 @@ class CouponAdd(LoginRequiredMixin, CreateView):
     def get_initial(self):
         initial = super(CouponAdd, self).get_initial()
         if "customer_pk" in self.kwargs:
-            customer = Customer.objects.get(id__iexact=self.kwargs.get("customer_pk"))
+            customer = Customer.objects.get(id=self.kwargs.get("customer_pk"))
             initial['customer'] = customer
         return initial
 
@@ -66,7 +66,7 @@ class CouponDelete(LoginRequiredMixin, DeleteView):
     model = Coupon
 
     def delete(self, *args, **kwargs):
-        self.customer = Coupon.objects.get(id__iexact=self.kwargs.get("pk")).customer.pk
+        self.customer = Coupon.objects.get(id=self.kwargs.get("pk")).customer.pk
         self.object = self.get_object()
         return super().delete(*args, **kwargs)
 
