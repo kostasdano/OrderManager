@@ -21,30 +21,8 @@ class OrderList(LoginRequiredMixin, ListView):
 
 class OrderCreate(LoginRequiredMixin, CreateView):
     model = Order
-    # fields = ['customer', 'product', 'amount', 'coupon']
     template_name = 'orders/create_form.html'
     form_class = OrderForm
-
-
-    # def get_initial(self):
-    #     initial = super(OrderCreate, self).get_initial()
-    #     if "customer_pk" in self.kwargs:
-    #         customer = Customer.objects.get(id__iexact=self.kwargs.get("customer_pk"))
-    #         initial['customer'] = customer
-    #     elif "product_pk" in self.kwargs:
-    #         product = Product.objects.get(id__iexact=self.kwargs.get("product_pk"))
-    #         initial['product'] = product
-    #     return initial
-    #
-    # def get_form(self, *args, **kwargs):
-    #     form = super(OrderCreate, self).get_form(*args, **kwargs)
-    #     if "customer_pk" in self.kwargs:
-    #         customer = Customer.objects.get(id__iexact=self.kwargs.get("customer_pk"))
-    #         form.fields['coupon'].queryset = customer.coupons.filter(order=None)
-    #
-    #     form.fields['customer'].queryset = Customer.objects.filter(c_active=True)
-    #     form.fields['product'].queryset = Product.objects.filter(p_active=True)
-    #     return form
 
 
 def load_coupons(request):
@@ -77,7 +55,7 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
 
 
     def delete(self, *args, **kwargs):
-        self.customer = Order.objects.get(id__iexact=str(self.kwargs.get("pk"))).customer.pk
+        self.customer = Order.objects.get(id=self.kwargs.get("pk")).customer.pk
         self.object = self.get_object()
         return super().delete(*args, **kwargs)
 
