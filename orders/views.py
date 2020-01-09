@@ -77,7 +77,7 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
 
 
     def delete(self, *args, **kwargs):
-        self.customer = Order.objects.get(id__iexact=self.kwargs.get("pk")).customer.pk
+        self.customer = Order.objects.get(id__iexact=str(self.kwargs.get("pk"))).customer.pk
         self.object = self.get_object()
         return super().delete(*args, **kwargs)
 
