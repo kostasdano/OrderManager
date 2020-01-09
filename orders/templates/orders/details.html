@@ -37,6 +37,7 @@
     {% if order.coupon %}
     <h4 align="right">Initial Price: {{ initial_price }} $</h4>
     <h5 align="right"><strong>Coupon: {{order.coupon.code}} (-{{order.coupon.discount_percentage}}%)</strong></h5>
+    <hr class="my-4">
     {% endif %}
     <h2 align="right">Total Price: {{ total_price }} $</h2>
 </div>

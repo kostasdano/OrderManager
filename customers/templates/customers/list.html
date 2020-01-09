@@ -6,9 +6,13 @@
 <div class="jumbotron">
     <div class="row">
         <div class="col-md-6" align="left">
-            <h1><i class="fa fa-user"></i> Customers <a href="{% url 'customers:customer_create' %}"><i
-                    class="fa fa-plus black"></i></a></h1>
+            <h1><i class="fa fa-user"></i>
+                <a href="{% url 'customers:customer_list'%}">Customers</a>
+                <a href="{% url 'customers:customer_create' %}"><i class="fa fa-plus black"></i></a>
+            </h1>
+            <a href="{% url 'customers:deactivated_customer_list'%}">(Show deactivated customers)</a>
         </div>
+
         <div class="col-md-6" align="right">
             <form class="form-inline float-right" action="{% url 'customers:customer_search' %}">
                 <input class="form-control mr-sm-2" name="keyword" type="text" placeholder="Search" aria-label="Search">
@@ -19,8 +23,12 @@
 </div>
 <div class="jumbotron">
     {% for customer in customer_list %}
+    {% if customer.c_active %}
     <h3><a href="{% url 'customers:customer_orders' pk=customer.id %}">{{customer.full_name}}</a></h3>
-    {% if forloop.counter < customer_list|length %}
+    {% else %}
+    <h3 class="hidden-content"><a href="{% url 'customers:customer_orders' pk=customer.id %}">{{customer.full_name}}</a></h3>
+    {% endif %}
+      {% if forloop.counter < customer_list|length %}
     <hr class="my-4">
     {% endif %}
     {% endfor %}

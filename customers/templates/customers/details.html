@@ -20,7 +20,7 @@
 {% endif %}
 
 
-<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+<div class="jumbotron {% if customer.c_active == False %} hidden-content {% endif %}">
     <div class="row">
         <div class="col-md-6" align="left">
             <h1>{{customer.full_name}}</h1>
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+<div class="jumbotron {% if customer.c_active == False %} hidden-content {% endif %}">
     <div class="row">
         <div class="col-md-6" align="left">
             <h2><i class="fa fa-stats"></i> Coupons <a
@@ -55,7 +55,7 @@
 </div>
 
 {% if coupon_list|length != 0 %}
-<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+<div class="jumbotron {% if customer.c_active == False %} hidden-content {% endif %}">
 
     {% for coupon in coupon_list %}
     <div class="row">
@@ -87,7 +87,7 @@
 {% endif %}
 
 
-<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+<div class="jumbotron {% if customer.c_active == False %} hidden-content {% endif %}">
     <div class="row">
         <div class="col-md-6" align="left">
             <h2><i class="fa fa-stats"></i> Orders <a
@@ -98,7 +98,7 @@
 </div>
 
 {% if order_list|length != 0 %}
-<div class="jumbotron {% if customer.c_active == False %} hidden-profile {% endif %}">
+<div class="jumbotron {% if customer.c_active == False %} hidden-content {% endif %}">
 
     {% for order in order_list %}
     <a href="{% url 'orders:order_details' pk=order.id %}">
@@ -113,7 +113,7 @@
 {% endif %}
 
 {% if is_paginated %}
-<nav class="custom-pagination {% if customer.c_active == False %} hidden-profile {% endif %}"
+<nav class="custom-pagination {% if customer.c_active == False %} hidden-content {% endif %}"
      aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}

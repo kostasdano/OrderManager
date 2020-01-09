@@ -18,6 +18,6 @@ a:link, a:visited, a:hover, a:active {
     color: black;
 }
 
-.hidden-profile {
+.hidden-content {
     opacity: 0.3;
 }

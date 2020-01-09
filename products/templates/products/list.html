@@ -8,8 +8,11 @@
 <div class="jumbotron">
     <div class="row">
         <div class="col-md-6" align="left">
-            <h1><i class="fa fa-th"></i> Products <a href="{% url 'products:product_create' %}"><i
-                    class="fa fa-plus black"></i></a></h1>
+            <h1><i class="fa fa-th"></i>
+                <a href="{% url 'products:product_list'%}">Products</a>
+                <a href="{% url 'products:product_create' %}"><i class="fa fa-plus black"></i></a>
+            </h1>
+             <a href="{% url 'products:deactivated_product_list'%}">(Show deactivated products)</a>
         </div>
         <div class="col-md-6" align="right">
             <form class="form-inline float-right" action="{% url 'products:product_search' %}">
@@ -24,7 +27,11 @@
 <div class="jumbotron">
 
     {% for product in product_list %}
+    {% if product.p_active %}
     <h3><a href="{% url 'products:product_details' pk=product.id %}">{{product.name}}</a></h3>
+    {% else %}
+    <h3 class="hidden-content"><a href="{% url 'products:product_details' pk=product.id %}">{{product.name}}</a></h3>
+    {% endif %}
     {% if forloop.counter < product_list|length %}
     <hr class="my-4">
     {% endif %}

@@ -17,6 +17,16 @@ class CustomerList(LoginRequiredMixin, ListView):
     paginate_by = 4
 
 
+class DeactivatedCustomerList(LoginRequiredMixin, ListView):
+    model = Customer
+    template_name = 'customers/list.html'
+
+    def get_queryset(self):
+        return Customer.objects.filter(c_active=False)
+
+    paginate_by = 4
+
+
 class CustomerSearch(LoginRequiredMixin, ListView):
     model = Customer
     template_name = 'customers/list.html'

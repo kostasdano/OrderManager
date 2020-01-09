@@ -5,6 +5,7 @@ app_name = 'customers'
 
 urlpatterns = [
     path('all/', views.CustomerList.as_view(), name='customer_list'),
+    path('all/deactivated/', views.DeactivatedCustomerList.as_view(), name='deactivated_customer_list'),
     path('<int:pk>/orders/', views.CustomerProducts.as_view(), name='customer_orders'),
     path('new/', views.CustomerCreate.as_view(), name='customer_create'),
     path('<int:customer_pk>/new_coupon/', views.CouponAdd.as_view(), name='customer_coupon_add'),

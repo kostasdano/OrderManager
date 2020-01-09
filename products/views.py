@@ -18,6 +18,16 @@ class ProductList(LoginRequiredMixin, ListView):
     paginate_by = 4
 
 
+class DeactivatedProductList(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = 'products/list.html'
+
+    def get_queryset(self):
+        return Product.objects.filter(p_active=False)
+
+    paginate_by = 4
+
+
 class ProductSearch(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'products/list.html'
