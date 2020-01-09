@@ -29,7 +29,7 @@ class Customer(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=10, unique=True)
-    discount_percentage = models.PositiveIntegerField(max_length=3)
+    discount_percentage = models.PositiveIntegerField()
     customer = models.ForeignKey(Customer, related_name="coupons", on_delete=models.CASCADE)       # Multiple coupons to each Customer
 
     def __str__(self):
