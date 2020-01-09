@@ -43,7 +43,7 @@ DeleteViews for Product Model. Activation/DeactivationViews included
 
 # Deployment
 Deployed in Heroku - 
-[(Click Here)](kostasdano-ordermanager.herokuapp.com/)
+[(Click Here)](https://kostasdano-ordermanager.herokuapp.com/)
 
 # Authors
 
