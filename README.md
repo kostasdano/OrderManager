@@ -47,10 +47,9 @@ DeleteViews (Single or Multiple Deletions) for Order Model.
 
 
 # Deployment
-Deployed in Heroku - 
+Deployed on Heroku - 
 [(Click Here)](https://kostasdano-ordermanager.herokuapp.com/)
 
 # Authors
 
-* **Konstantinos Danochristos** - [Github](https://github.com/kostasdano)
-
+* **Konstantinos Danochristos** 
