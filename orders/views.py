@@ -1,5 +1,4 @@
 from decimal import *
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,6 +9,7 @@ from .models import Order
 from .forms import OrderForm, CheckboxesForm
 
 
+# List of all Orders
 class OrderList(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'orders/list.html'
@@ -17,6 +17,7 @@ class OrderList(LoginRequiredMixin, ListView):
     paginate_by = 6
 
 
+# Create Order
 class OrderCreate(LoginRequiredMixin, CreateView):
     model = Order
     template_name = 'orders/create_form.html'
@@ -31,7 +32,7 @@ def load_coupons(request):
     return render(request, 'orders/coupon_dropdown_list_options.html', {'coupons': coupons})
 
 
-
+# Order Details
 class OrderDetails(LoginRequiredMixin, DetailView):
     model = Order
     context_object_name = 'order'
@@ -40,6 +41,7 @@ class OrderDetails(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
+        # Calculate discount, if coupon exists
         if ctx['order'].coupon:
             ctx['initial_price'] = ctx['order'].amount * ctx['order'].product.price
             ctx['total_price'] = round(Decimal(ctx['initial_price'] - Decimal(ctx['initial_price']) * Decimal(ctx['order'].coupon.discount_percentage/100)), 2)
@@ -48,6 +50,7 @@ class OrderDetails(LoginRequiredMixin, DetailView):
         return ctx
 
 
+# Delete Order
 class OrderDelete(LoginRequiredMixin, DeleteView):
     model = Order
 
@@ -60,6 +63,7 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
         return reverse_lazy('customers:customer_orders', kwargs={'pk': self.customer})
 
 
+# Edit Order
 class OrderUpdate(LoginRequiredMixin, UpdateView):
     model = Order
     fields = ['amount']
@@ -69,7 +73,7 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
         return reverse_lazy('orders:order_details', kwargs={'pk': self.object.pk})
 
 
-# Delete Multiple Orders
+# Delete Multiple Orders / Uses Checkboxes Form
 class DeleteMultipleOrders(LoginRequiredMixin, FormView):
     form_class = CheckboxesForm
     template_name = 'orders/delete_multiple_orders.html'
@@ -81,7 +85,6 @@ class DeleteMultipleOrders(LoginRequiredMixin, FormView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-
         form.fields['checkboxes'].queryset = Order.objects.all()
         return form
 
@@ -90,6 +93,5 @@ class DeleteMultipleOrders(LoginRequiredMixin, FormView):
             pk__in=list(map(int, self.request.POST.getlist('checkboxes')))
         )
         qs.delete()
-
         return HttpResponseRedirect(reverse_lazy('orders:order_list'))
 
