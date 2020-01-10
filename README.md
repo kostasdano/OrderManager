@@ -10,11 +10,11 @@ while every Customer has Discount Coupons
 * **customers/models.py:** contains CustomerModel and CouponModel with all the basic fields (for more info see code)
 
 * **customers/views.py:** contains all the views for Customer and Coupon models. CreateViews, ListViews, UpdateViews and
-DeleteViews for both models. ListView for CouponModel not implemented, included in CustomerProducts View. Activation/DeactivationViews included
+DeleteViews for both models. ListView for CouponModel not implemented, included in CustomerProductsView. Activation/DeactivationViews for Customer included.
 
 * **customers/urls.py:** contains all the urls for Customer and Coupon models (for more info see code)
 
-* **customers/templates:** contains all the templates for Customer and Coupon models. CreateFormTemplates, DetailsTemplates (Customer Profile), CustomerListTemplates, UpdateFormTemplates and DeletionOptionsTemplate (Deletion or Deactivation Confirmation)
+* **customers/templates:** contains all the templates for Customer and Coupon models. CreateFormTemplates, DetailsTemplates (Customer Profile), CustomerListTemplates, UpdateFormTemplates and DeletionOptionsTemplate for Customer (Deletion or Deactivation Confirmation) and DeleteView for Coupon.
 
 
 ### Products
@@ -34,11 +34,16 @@ DeleteViews for Product Model. Activation/DeactivationViews included
 * **orders/models.py:** contains OrderModel with all the basic fields (for more info see code)
 
 * **orders/views.py:** contains all the views for Order Model. CreateViews, ListViews, UpdateViews and
-DeleteViews for Product Model. Activation/DeactivationViews included
+DeleteViews (Single or Multiple Deletions) for Order Model.
 
 * **orders/urls.py:** contains all the urls for Order Model (for more info see code)
 
-* **orders/templates:** contains all the templates for Order Model. CreateFormTemplates, DetailsTemplates (Order Details), OrdersListTemplates, UpdateFormTemplates and DeletionOptionsTemplate (Deletion or Deactivation Confirmation)
+* **orders/templates:** contains all the templates for Order Model. CreateFormTemplates, DetailsTemplates (Order Details), OrdersListTemplates, UpdateFormTemplates and DeletionTemplates (Single or Multiple Deletion). Also contains a template for the coupon dropdownlist for the OrderCreate Form
+
+
+# Extra features
+
+* **Search:** The user can search for Customers and Products in the Customer/Product Tabs but he can also search in general through the HomePage (for Customers/Products/Orders). myshopproject/views.py contains all the necessary code for the HomePage Search
 
 
 # Deployment
